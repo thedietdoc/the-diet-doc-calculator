@@ -46,7 +46,7 @@ $(document).ready(function () {
                 //$('#calcResults').append(data);
 
                 var html = '<div id="data-panel"> \
-		  	<div class="col-md-6">\
+		  	<div class="col-md-10">\
 				<table class="table table-striped">\
 				  <tr>\
 				  	<td>Calories</td>\
@@ -111,21 +111,53 @@ $(document).ready(function () {
 				  	<td>Protein Goal Adjustment </td>\
 				  	<td>'+ parseData.proteinGoalAdjustment +'</td>\
 				  </tr>\
+				    <tr>\
+				  	<td>Goal Adjusted Protein </td>\
+				  	<td>'+ parseData.proteinGoalAdjusted +'</td>\
+				  </tr>\
 				  <tr>\
 				  	<td> Protein Intensity Adjustment </td>\
 				  	<td>'+ parseData.proteinIntensityAdjustment +'</td>\
+				  </tr>\
+				  <tr>\
+				  	<td> Intensity Adjusted Protein  </td>\
+				  	<td>'+ parseData.proteinIntensityAdjusted +'</td>\
 				  </tr>\
 				   <tr>\
 				  	<td> Protein Body Type Adjustment </td>\
 				  	<td>'+ parseData.proteinBodyTypeAdjustment +'</td>\
 				  </tr>\
 				  <tr>\
+				  	<td> Body Type Adjusted  Protein  </td>\
+				  	<td>'+ parseData.proteinBodyTypeAdjusted +'</td>\
+				  </tr>\
+				  <tr>\
 				  	<td>Fat Goal Adjustment </td>\
 				  	<td>'+ parseData.fatGoalAdjustment +'</td>\
 				  </tr>\
 				   <tr>\
+				  	<td>Goal Fat Adjusted </td>\
+				  	<td>'+ parseData.fatGoalAdjusted +'</td>\
+				  </tr>\
+				   <tr>\
 				  	<td>Fat Body Type Adjustment </td>\
 				  	<td>'+ parseData.fatBodyTypeAdjustment +'</td>\
+				  </tr>\
+				  <tr>\
+				  	<td>Body Type Fat Adjusted </td>\
+				  	<td>'+ parseData.fatBodyTypeAdjusted +'</td>\
+				  </tr>\
+				   <tr>\
+				  	<td>Protein Calories </td>\
+				  	<td>'+ parseData.proteinCals +'</td>\
+				  </tr>\
+				   <tr>\
+				  	<td>Fat Calories </td>\
+				  	<td>'+ parseData.fatCals +'</td>\
+				  </tr>\
+				   <tr>\
+				  	<td>Remainder Calories </td>\
+				  	<td>'+ parseData.remainderCals +'</td>\
 				  </tr>\
 				</table>\
 			</div>\

@@ -110,3 +110,7 @@
 #calculator-form .calc-btn {
     width: 150px;
 }
+
+#main-content .container {
+    padding-top: 20px;
+}
