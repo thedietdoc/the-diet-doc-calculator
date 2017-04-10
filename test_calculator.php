@@ -31,7 +31,7 @@
                             <option value="5">5 Feet</option>
                             <option value="6">6 Feet</option>
                             <option value="7">7 Feet</option>
-                        </select>
+                        </select>&nbsp;
                         <select id="heightI" name="heightI">
                             <option value="0">--</option>
                             <option value="1">1 Inch</option>
@@ -99,7 +99,29 @@
                         <input type="radio" name="goal" value="3"> Maintain<br>
                     </td>
                 </tr>
-
+                <tr>
+                    <td class="testLabel">Meals per day</td>
+                    <td>
+                        <select id="meals" name="meals">
+                            <option value="0">1</option>
+                            <option value="1">2</option>
+                            <option value="2">3</option>
+                            <option value="3">4</option>
+                            <option value="4">5</option>
+                            <option value="5">6</option>
+                            <option value="6">7</option>
+                            <option value="7">8</option>
+                            <option value="8">9</option>
+                            <option value="9">10</option>
+                        </select>
+                    </td>
+                    <td class="testLabel">Eat Out per week</td>
+                    <td>
+                        <input type="radio" name="eatOut" value="0" checked>0-3<br>
+                        <input type="radio" name="eatOut" value="1">4-6<br>
+                        <input type="radio" name="eatOut" value="2">7-10<br>
+                        <input type="radio" name="eatOut" value="3">11-14<br>
+                    </td>
                 <tr>
                     <td></td> <td></td>
                     <td></td>

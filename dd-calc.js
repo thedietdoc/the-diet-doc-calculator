@@ -2,12 +2,13 @@ $(document).ready(function () {
 
     $("#clear-button").click(function(e) {
         e.preventDefault();
-        $('#calcResults').html("");
+        //$('#calcResults').html("").fadeOut();
+        $("#calcResults").fadeOut(3000, function() { $('#calcResults').html(""); });
     });
 
     $("#calc-button").click(function(e) {
         e.preventDefault();
-        $('#calcResults').html("");
+        $('#calcResults').html("").fadeOut();
 
        /* var formData = $("#calculator-form").serializeArray();
         var URL = ajaxurl;
@@ -43,7 +44,8 @@ $(document).ready(function () {
                 var parseData = jQuery.parseJSON(data);
                 console.log("SUCCESS: " + data)
                 //$('#calcResults').append(data);
-                $('#calcResults').append('<div id="data-panel"> \
+
+                var html = '<div id="data-panel"> \
 		  	<div class="col-md-6">\
 				<table class="table table-striped">\
 				  <tr>\
@@ -85,45 +87,54 @@ $(document).ready(function () {
 				  	<td>Height (cm)</td>\
 				  	<td>'+ parseData.height +'</td>\
 				  </tr>\
-				  <tr>\
-				  	<td>Intensity Adj</td>\
-				  	<td>'+ parseData.intensityAdjustment +'</td>\
-				  </tr>\
 				   <tr>\
 				  	<td>Goal Adjustment </td>\
 				  	<td>'+ parseData.goalAdjustment +'</td>\
 				  </tr>\
 				  <tr>\
-				  	<td> Duration Adjustment </td>\
-				  	<td>'+ parseData.durationAdjustment +'</td>\
-				  </tr>\
-				  <tr>\
-				  	<td> BodyType Adjustment </td>\
-				  	<td>'+ parseData.bodyTypeAdjustment +'</td>\
-				  </tr>\
-				  <tr>\
 				  	<td> Activity Adjustment </td>\
 				  	<td>'+ parseData.activityAdjustment +'</td>\
 				  </tr>\
-				    <tr>\
-				  	<td>Macro Goal Adjustment</td>\
-				  	<td>'+ parseData.macroGoalAdjustment +'</td>\
+				  <tr>\
+				  	<td> Duration Adjustment </td>\
+				  	<td>'+ parseData.durationAdjustment +'</td>\
+				  </tr>\
+				   <tr>\
+				  	<td> Meal Count Adjustment </td>\
+				  	<td>'+ parseData.mealsAdjustment +'</td>\
+				  </tr>\
+				  <tr>\
+				  	<td> Eating Out Adjustment </td>\
+				  	<td>'+ parseData.eatOutAdjustment +'</td>\
+				  </tr>\
+				  <tr>\
+				  	<td>Protein Goal Adjustment </td>\
+				  	<td>'+ parseData.proteinGoalAdjustment +'</td>\
+				  </tr>\
+				  <tr>\
+				  	<td> Protein Intensity Adjustment </td>\
+				  	<td>'+ parseData.proteinIntensityAdjustment +'</td>\
+				  </tr>\
+				   <tr>\
+				  	<td> Protein Body Type Adjustment </td>\
+				  	<td>'+ parseData.proteinBodyTypeAdjustment +'</td>\
 				  </tr>\
 				  <tr>\
 				  	<td>Fat Goal Adjustment </td>\
 				  	<td>'+ parseData.fatGoalAdjustment +'</td>\
 				  </tr>\
-				  <tr>\
-				  	<td> Protein Goal Adjustment </td>\
-				  	<td>'+ parseData.proteinGoalAdjustment +'</td>\
+				   <tr>\
+				  	<td>Fat Body Type Adjustment </td>\
+				  	<td>'+ parseData.fatBodyTypeAdjustment +'</td>\
 				  </tr>\
 				</table>\
 			</div>\
-		</div>');
+		</div>';
+                $("#calcResults").append(html).fadeIn();
         },
             error:function(xhr, status, error) {
 
-                alert(error);
+                console.error(error);
             }
         });
 
@@ -193,12 +204,11 @@ $(document).ready(function () {
         if (isValid)
             nextStepWizard.removeAttr('disabled').trigger('click');
 
-        if(!timeFilled) {
-            fillTime();
-        }
+
     });
 
     $('div.setup-panel div a.btn-primary').trigger('click');
+
     for(var i = 1; i < 111;i++) {
         if(i != 1) {
             $('#age').append($('<option>', {value: i, text: i + ' Years Old'}));
@@ -206,6 +216,7 @@ $(document).ready(function () {
             $('#age').append($('<option>', {value: i, text: i + ' Year Old'}));
         }
     }
+
 
 
     for (var i = 0; i < 60; i += 5) {
@@ -219,20 +230,3 @@ $(document).ready(function () {
 
 
 });
-
-function fillTime() {
-
-   // var duration = moment.duration(123, "minutes").format("h:mm");
-
-    var str = moment.duration({"seconds":69}).humanize();
-    console.log(str);
-
-    for (var i = 0; i < 180; i += 5) {
-        console.log("i is now: " + i);
-        var time = moment.duration({"minutes":i}).format("hh:mm");
-        console.log("writting time of : " + time);
-        //var time = moment().duration(i, "minutes").format();
-        $('#activityDuration').append($('<option>', {value: i, text: time}));
-    }
-    timeFilled = true;
-}
