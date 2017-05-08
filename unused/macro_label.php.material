@@ -1,0 +1,55 @@
+<?php $imgPath = plugin_dir_url( __FILE__ ) . "assets/img"; ?>
+
+<style>
+    #calories {
+        background-image: url("<?php echo $imgPath ?>/red-pentagonal-background-200.png");
+        background-color: #E53935;
+    }
+    #protein {
+        background-image: url("<?php echo $imgPath ?>/green-pentagonal-background-200.png");
+        background-color: #43A047;
+
+    }
+    #carbs {
+        background-image: url("<?php echo $imgPath ?>/cyan-pentagonal-background-200.png");
+        background-color: #00ACC1;
+
+    }
+    #fat {
+        background-image: url("<?php echo $imgPath ?>/amber-pentagonal-background-200.png");
+        background-color: #FFB300;
+
+    }
+
+</style>
+
+<div class="mdl-grid">
+    <div class="macro-label mdl-cell--12-col">
+        <ul>
+            <li class="mdl-cell--3-col">
+               <div class="macro-label__item">
+                   <div id="calories" class="macro-label__value"><span><?php echo $variables["calories"] ?></span></div>
+                   <div class="macro-label__label">Calories</div>
+               </div>
+            </li>
+            <li class="mdl-cell--3-col">
+                <div class="macro-label__item">
+                    <div id="protein" class="macro-label__value"><span><?php echo $variables["protein"] ?></span></div>
+                    <div class="macro-label__label">Protein</div>
+                </div>
+            </li>
+            <li class="mdl-cell--3-col">
+                <div class="macro-label__item">
+                    <div id="carbs" class="macro-label__value"><span><?php echo $variables["carbs"] ?></span></div>
+                    <div class="macro-label__label">Carbohydrates</div>
+                </div>
+            </li>
+            <li class="mdl-cell--3-col">
+                <div class="macro-label__item">
+                    <div id="fat" class="macro-label__value"><span><?php echo $variables["fat"] ?></span></div>
+                    <div class="macro-label__label">Fat</div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

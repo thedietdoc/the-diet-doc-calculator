@@ -1,14 +1,18 @@
 <?php
 /**
- * Plugin Name:       The Diet Doc Macronutrient Calculator
- * Plugin URI:        https://github.com/thedietdoc/the-diet-doc-calculator
- * Description:       Macro Nutrient Calculator using proprietary algorithm created by Dr. Joe Klemczewski
- * Version:           1.0.5
- * Author:            Brian Szucs
+ * Plugin Name:       The Diet Doc Dohicky Calculators
+ * Plugin URI:        https://www.babyibexrule.com
+ * Description:       Macro Nutrient Calculator provided by Dr. Joe Klmemczewski and his trusty sidekick
+ * Version:           1.0.0
+ * Author:            Brian Zooxinator
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       the-diet-doc-calculator
  */
+
+include "model/Calculator.php";
+
+global $imgPath;;
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
@@ -16,92 +20,98 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 class TheDietDocCalculator {
-    /*public $gender;
-    public $age;
-    public $height;
-    public $weight;
-    public $bodyType;
-    public $activity;
-    public $duration;
-    public $intensity;
-    public $goal;*/
-    private function is_bot()  {
-        if (!isset($_SERVER['HTTP_USER_AGENT'])) {
-            return false;
-        }
 
-        $crawlers_agents = strtolower('Bloglines subscriber|Dumbot|Sosoimagespider|QihooBot|FAST-WebCrawler|Superdownloads Spiderman|LinkWalker|msnbot|ASPSeek|WebAlta Crawler|Lycos|FeedFetcher-Google|Yahoo|YoudaoBot|AdsBot-Google|Googlebot|Scooter|Gigabot|Charlotte|eStyle|AcioRobot|GeonaBot|msnbot-media|Baidu|CocoCrawler|Google|Charlotte t|Yahoo! Slurp China|Sogou web spider|YodaoBot|MSRBOT|AbachoBOT|Sogou head spider|AltaVista|IDBot|Sosospider|Yahoo! Slurp|Java VM|DotBot|LiteFinder|Yeti|Rambler|Scrubby|Baiduspider|accoona');
-        $crawlers = explode("|", $crawlers_agents);
-        foreach ($crawlers as $crawler) {
-            if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), trim($crawler)) !== false) {
-                return true;
-            }
-        }
-        return false;
+    function fix_jquery() {
+        wp_enqueue_script('jquery');
+        wp_enqueue_script('fix-jquery', plugin_dir_url(__FILE__) . 'assets/js/fix-jquery.js', array('jquery'), null, false);
+
+    }
+    function enqueue_styles() {
+
+        wp_enqueue_style( 'material-icons-style',plugin_dir_url(__FILE__) . 'assets/css/material-icons.css');
+        wp_enqueue_style( 'font-awesom-style', plugin_dir_url(__FILE__) . 'assets/css/font-awesome.css');
+
+        //wp_enqueue_style( 'demo-style', plugin_dir_url(__FILE__) . 'assets/css/demo.css');
+        wp_enqueue_style( 'material-bootstrap-wizard-style', plugin_dir_url(__FILE__) . 'assets/css/material-bootstrap-wizard.css');
+        wp_enqueue_style( 'material-bootstrap-wizard-style', plugin_dir_url(__FILE__) . 'assets/css/bootstrap-theme.css');
+        //wp_enqueue_style( 'material-validation-style', plugin_dir_url(__FILE__) . 'assets/css/jquery.material.form.min.css');
+        //wp_enqueue_style( 'material-style', plugin_dir_url(__FILE__) . 'assets/css/material.min.css');
+        //wp_enqueue_style( 'material-colors-style', plugin_dir_url(__FILE__) . 'assets/css/material.colors.css');
+        //wp_enqueue_style( 'material-stepper-style', plugin_dir_url(__FILE__) . 'assets/css/stepper.min.css');
+        wp_enqueue_style( 'calculator-style', plugin_dir_url(__FILE__) . 'assets/css/calculator.css');
+    }
+    function enqueue_scripts() {
+
+
+
+
+            //wp_enqueue_script('fix-jquery', plugin_dir_url(__FILE__) . 'assets/js/bootstrap.min.js', array('jquery'), null, true);
+
+
+            //wp_enqueue_script('additional-methods-script', plugin_dir_url(__FILE__) . 'assets/js/additional-methods.min.js', array('fix-jquery'), null, true);
+            //wp_enqueue_script('validation-script', plugin_dir_url(__FILE__) . 'assets/js/jquery.material.form.min.js', array('fix-jquery'), null, true);
+            //wp_enqueue_script('material-script', plugin_dir_url(__FILE__) . 'assets/js/material.min.js', array(), null, true);
+            //wp_enqueue_script('stepper-script', plugin_dir_url(__FILE__) . 'assets/js/stepper.min.js', array('fix-jquery'), null, true);
+            //wp_enqueue_script('calc-script', plugin_dir_url(__FILE__) . 'assets/js/stepper-nonlinear.js', array('fix-jquery'), null, true);
+            wp_enqueue_script('jquery-bootstrap-script', plugin_dir_url(__FILE__) . 'assets/js/jquery.bootstrap.js', array('fix-jquery'), null, true);
+            wp_enqueue_script('dd-script', plugin_dir_url(__FILE__) . 'assets/js/dd-calc.js', array('fix-jquery'), null, true);
+            wp_enqueue_script('wizard-script', plugin_dir_url(__FILE__) . 'assets/js/material-bootstrap-wizard.js', array('fix-jquery'), null, true);
+            //wp_enqueue_script('jquery-validation-script', plugin_dir_url(__FILE__) . 'assets/js/jquery.validate.min.js', array('fix-jquery'), null, true);
+            //wp_enqueue_script('validate-script', plugin_dir_url(__FILE__) . 'assets/js/jquery.validate.min.js', array('fix-jquery'), null, true);
+            //wp_enqueue_script('validation-script', plugin_dir_url(__FILE__) . 'assets/js/modernizr-custom.js', array('fix-jquery'), null, true);
+
+
     }
 
-    public function __construct() {
-        if (!$this->is_bot()) {
-
-
-            //wp_enqueue_style('mdl-styles', plugin_dir_url(__FILE__) . 'stepper.min.css');
-            wp_enqueue_script('jquery-script', plugin_dir_url( __FILE__ ) . 'public/js/jquery.js', array(), null, false);
-            ///wp_enqueue_script('moment-scripts', plugin_dir_url(__FILE__) . 'public/js/moment.js', array("jquery-script"), null, false);
-            //wp_enqueue_script('moment-duration-format-scripts', plugin_dir_url(__FILE__) . 'public/js/moment-duration-format.js', array("moment-script"), null, false);
-            //wp_enqueue_script('chosenJqueryScript', plugin_dir_url( __FILE__ ) . 'chosen/chosen.jquery.js', array(), null, true);
-            wp_enqueue_script('tether-script', plugin_dir_url( __FILE__ ) . 'public/tether/js/tether.min.js', array(), null, true);
-            wp_enqueue_script('bootstrap-script', plugin_dir_url(__FILE__) . 'public/bootstrap/js/bootstrap.min.js', array(), null, true);
-            wp_enqueue_script('bootstrap-toggle-script', plugin_dir_url(__FILE__) . 'public/bootstrap/js/bootstrap-toggle.min.js', array(), null, true);
-            wp_enqueue_script('validator-script', plugin_dir_url( __FILE__ ) . 'public/bootstrap/js/bootstrap.validator.js', array(), null, false);
-
-            //wp_enqueue_script('mdlScript', plugin_dir_url(__FILE__) . 'material.min.js', array(), null, false);
-            //wp_enqueue_script('stepperScript', plugin_dir_url(__FILE__) . 'stepper.min.js', array(), null, false);
-
-            //wp_enqueue_script('bootstrapWizardScript', plugin_dir_url( __FILE__ ) . 'bootstrap-wizard.js', array(), null, true);
-
-            wp_enqueue_scripts( 'wp-utils' );
-            wp_enqueue_script('dd-calculator-shortcode-scripts', plugin_dir_url(__FILE__) . 'dd-calc2.js', array(), null, true);
-
-            wp_enqueue_style('bootstrap-style', plugin_dir_url(__FILE__) . 'public/bootstrap/css/bootstrap.min.css');
-            wp_enqueue_style('bootstrap-toggle-style', plugin_dir_url(__FILE__) . 'public/bootstrap/css/bootstrap-toggle.min.css');
-            //wp_enqueue_style('chosenStyle', plugin_dir_url(__FILE__) . 'chosen/chosen.css');
-            //wp_enqueue_style('bootstrap-wizard-style', plugin_dir_url(__FILE__) . 'bootstrap-wizard.css');
-            //wp_enqueue_style('bootstrap-nav-wizard-style', plugin_dir_url(__FILE__) . 'public/bootstrap/css/bootstrap.nav.wizard.css');
-
-            wp_enqueue_style('dd-calculator-shortcode-styles', plugin_dir_url(__FILE__) . 'dd-calc2.css');
-            //wp_enqueue_style('mdl-styles', plugin_dir_url(__FILE__) . 'material.min.css');
-            //wp_enqueue_style('mdl-icon-styles', "https://fonts.googleapis.com/icon?family=Material+Icons");
-            //wp_enqueue_style('mdl-icon-styles', "https://code.getmdl.io/1.1.3/material.indigo-pink.min.css");
-        }
+    function dd_custom_head() {
+        $this->fix_jquery();
+        echo '<script type="text/javascript">var ajaxurl = \'' . admin_url('admin-ajax.php') . '\';</script>';
     }
 
+    public function createCalculator($attrs)    {
+        return include_once("inc/boot-wizard.php");
+    }
+
+    public function createTestCalculator($attrs)    {
+        return include_once("test_calculator.php");
+    }
 
     function dd_calculate() {
 
+        $calculator = new Calculator($_POST);
+
+        $heightFeet = $_POST['height'];
+
+
         $gender = $_POST['gender'];
-        $age = $_POST['age'];
-        $heightF = $_POST['heightF'];
-        $heightI = $_POST['heightI'];
-        $weight1 = $_POST['weight'];
+        //$age = $_POST['age'];
+
+        $weight1 = $calculator->profile->weightLbs;
         $bodyType = $_POST['bodyType'];
         $duration = $_POST['duration'];
-        $activity = $_POST['activity'];
+        $frequency = $_POST['frequency'];
         $intensity = $_POST['intensity'];
         $meals = $_POST['meals'];
         $eatOut = $_POST['eatOut'];
         $goal = $_POST['goal'];
-
-        $height = (int) round((($heightF * 12) + $heightI) / 0.393701);
-        $weight = $weight1 * 0.45359237;
-
-        if($gender == "male"){
-            $calories = ($weight*10)+($height*6.25)-(5*$age)+5;
-        } else {
-            $calories = (($weight*10)+($height*6.25)-(2*$age))-161;
+        $persona = $_POST['persona'];
+        if($persona == null) {
+            $persona = 0;
         }
+        $macros = $calculator->calculate();
+        //
+        //$height = $calculator->profile->heightCm;
+        //$weight = $calculator->profile->weightKg;
+        $calories = $macros->harrisBendict;
+
+        /* if($gender == "male"){
+             $calories = ($weight*10)+($height*6.25)-(5*$calculator->profile->age)+5;
+         } else {
+             $calories = (($weight*10)+($height*6.25)-(2*$calculator->profile->age))-161;
+         }*/
 
         $goalAdjustment = 0;
-        if($gender == "male") {
+        if($gender == 0) {
             if($goal == 0) { // lose fat
                 // nothing
             } else if($goal == 1) { // gain muscle
@@ -114,30 +124,59 @@ class TheDietDocCalculator {
         }else{
             if($goal == 0) { // lose fat
                 // nothing
+                $goalAdjustment = -0.10;
             } else if($goal == 1) {
-                $goalAdjustment = 0.3;
+                //$goalAdjustment = 0.3;
+                $goalAdjustment = 0.20;
             } else if($goal == 2) {
-                $goalAdjustment = 0.05;
+                //$goalAdjustment = 0.05;
+                $goalAdjustment = -0.05;
             } else if($goal == 3) {
-                $goalAdjustment = 0.2;
+                $goalAdjustment = 0.0;
             }
         }
         $result = $calories + ($calories * $goalAdjustment);
 
-        $activityAdjustment = 0;
-        if($activity == 0) { // lose fat
-            // nothing
-        } else if($activity == 1) { // 1-2
-            $activityAdjustment = 0.02;
-        } else if($activity == 2) { //3-4
-            $activityAdjustment = 0.04;
-        } else if($activity == 3) { // 5-7
-            $activityAdjustment = 0.06;
+
+        $btAdjustment = 0;
+        if($gender == 0) {
+            if($bodyType == 0) { // lose fat
+                // nothing
+                $btAdjustment = 0.2;
+            } else if($bodyType == 1) { // gain muscle
+                $btAdjustment = 0.1;
+            } else if($bodyType == 2) { // gain muscle & lose fat
+                $btAdjustment = 0.0;
+            }
+        }else{
+            if($bodyType == 0) { // lose fat
+                // nothing
+                $btAdjustment = 0.10;
+            } else if($bodyType == 1) {
+                //$goalAdjustment = 0.3;
+                $btAdjustment = 0.0;
+            } else if($bodyType == 2) {
+                //$goalAdjustment = 0.05;
+                $btAdjustment = -0.1;
+            }
         }
-        $result += ($result * $activityAdjustment);
+        $result = $result + ($calories * $btAdjustment);
+
+
+        $frequencyAdjustment = 0;
+        if($frequency == 0) { // lose fat
+            // nothing
+        } else if($frequency == 1) { // 1-2
+            $frequencyAdjustment = 0.02;
+        } else if($frequency == 2) { //3-4
+            $frequencyAdjustment = 0.04;
+        } else if($frequency == 3) { // 5-7
+            $frequencyAdjustment = 0.06;
+        }
+        $result += ($result * $frequencyAdjustment);
 
         $durationAdjustment = 0;
-        if($gender == "male") {
+        if($gender == 0) {
             if($duration == 0) { // 0-30
                 $durationAdjustment = 0.02;
             } else if($duration == 1) { // 31-60
@@ -157,7 +196,7 @@ class TheDietDocCalculator {
         $result += ($result * $durationAdjustment);
 
         $mealsAdjustment = 0;
-        if($gender == "male") {
+        if($gender == 0) {
             if($meals == 1) { // 31-60
                 $mealsAdjustment = -0.20;
             } else if($meals == 2) { // over hour
@@ -167,7 +206,7 @@ class TheDietDocCalculator {
             } else if($meals == 4) { // over hour
                 $mealsAdjustment = -0.05;
             } else if($meals == 5) { // over hour
-               // nothing
+                // nothing
             } else if($meals == 6) { // 31-60
                 // nothing
             } else if($meals == 7) { // over hour
@@ -192,7 +231,7 @@ class TheDietDocCalculator {
             } else if($meals == 5) { // over hour
                 // nothing
             } else if($meals == 6) { // 31-60
-               // nothing
+                // nothing
             } else if($meals == 7) { // over hour
                 $mealsAdjustment = 0.05;
             } else if($meals == 8) { // over hour
@@ -222,15 +261,36 @@ class TheDietDocCalculator {
 
         $proteinGoalAdjustment = 0;
         if($goal == 0) { // loase fat
-            $proteinGoalAdjustment = 0.73;
+            $proteinGoalAdjustment = 0.75;
         } else if($goal == 1) { //gain muscle
-            $proteinGoalAdjustment = 1.08;
+            $proteinGoalAdjustment = .85;
         } else if($goal == 2) { // lose and gain
 
-            $proteinGoalAdjustment = 0.73;
+            $proteinGoalAdjustment = 0.70;
         } else if($goal == 3) { // maintain
-            $proteinGoalAdjustment = 0.55;
+            $proteinGoalAdjustment = 0.65;
         }
+
+        $personaAdjustment = 0;
+        if($gender == 0) {
+            if($persona == 0) { // 0-30
+                $personaAdjustment = 0;
+            } else if($persona == 1) { // 31-60
+                $personaAdjustment = 0.15;
+            } else if($persona == 2) { // over hour
+                $personaAdjustment = 0.10;
+            }
+        }else{
+            if($persona == 0) { // 0-30
+                $personaAdjustment = 0.0;
+            } else if($persona == 1) { // 31-60
+                $personaAdjustment = 0.10;
+            } else if($persona == 2) { // over hour
+                $personaAdjustment = 0.05;
+            }
+        }
+        $result += ($result * $personaAdjustment);
+
 
         $proteinIntensityAdjustment = 0;
         if($intensity == 2) {
@@ -246,8 +306,26 @@ class TheDietDocCalculator {
             $proteinBodyTypeAdjustment = 0.05;
         }
 
+        $personaProteinAdjusted = 0;
+
+        $personaProteinAdjustment = 0;
+        $personaFatAdjustment = 0;
         $proteinIntensityAdjusted = 0;
         $proteinBodyTypeAdjusted = 0;
+
+        if($persona == 0) { // 0-30
+            $personaProteinAdjustment = 0;
+            $personaFatAdjustment=0;
+        } else if($persona == 1) { // 31-60
+            $personaProteinAdjustment = 0.10;
+            $personaFatAdjustment = 0.10;
+        } else if($persona == 2) { // over hour
+            $personaProteinAdjustment = 0.20;
+            $personaFatAdjustment = 0.05;
+        }
+
+
+
         $proteinGoalAdjusted = round($weight1 * $proteinGoalAdjustment);
         if($proteinIntensityAdjustment == 0) {
             $proteinIntensityAdjusted = $proteinGoalAdjusted;
@@ -256,10 +334,19 @@ class TheDietDocCalculator {
         }
         $proteinIntensityAdjusted = round($proteinIntensityAdjusted);
 
-        if($proteinBodyTypeAdjustment == 0) {
-            $proteinBodyTypeAdjusted = $proteinIntensityAdjusted;
+        if($personaProteinAdjustment == 0) {
+            $personaProteinAdjusted = $proteinIntensityAdjusted;
         } else {
-            $proteinBodyTypeAdjusted = $proteinIntensityAdjusted + ($proteinIntensityAdjusted * $proteinBodyTypeAdjustment);
+            $personaProteinAdjusted = $proteinIntensityAdjusted + ($proteinIntensityAdjusted * $personaProteinAdjustment);
+        }
+        $personaProteinAdjusted = round($personaProteinAdjusted);
+
+
+
+        if($proteinBodyTypeAdjustment == 0) {
+            $proteinBodyTypeAdjusted = $personaProteinAdjusted;
+        } else {
+            $proteinBodyTypeAdjusted = $personaProteinAdjusted + ($personaProteinAdjusted * $proteinBodyTypeAdjustment);
         }
         $proteinBodyTypeAdjusted = round($proteinBodyTypeAdjusted);
 
@@ -281,19 +368,25 @@ class TheDietDocCalculator {
 
         $fatBodyTypeAdjusted = 0;
         $fatBodyTypeAdjustment = 0;
+        $personaFatAdjusted = 0;
         if($bodyType == 0) { //Ectomorph
             $fatBodyTypeAdjustment = 0.05;
         } else if($bodyType == 2) { //Mesomorph
             $fatBodyTypeAdjustment = -0.05;
         }
         if($fatBodyTypeAdjustment == 0) {
-            $fatBodyTypeAdjusted = $fatGoalAdjusted;
+            $fatBodyTypeAdjusted = round($fatGoalAdjusted);
         }else {
-            $fatBodyTypeAdjusted = $fatGoalAdjusted + ($fatGoalAdjusted * $fatBodyTypeAdjustment);
+            $fatBodyTypeAdjusted = round($fatGoalAdjusted + ($fatGoalAdjusted * $fatBodyTypeAdjustment));
         }
 
-        $fat = $fatBodyTypeAdjusted / 9;
+        if($personaFatAdjustment == 0) {
+            $personaFatAdjusted = round($fatBodyTypeAdjusted);
+        }else {
+            $personaFatAdjusted = round($fatBodyTypeAdjusted + ($fatBodyTypeAdjusted * $personaFatAdjustment));
+        }
 
+        $fat = round($personaFatAdjusted / 9);
 
         $proteinCals = round($protein * 4);
         $fatCals = round($fat * 9);
@@ -304,244 +397,33 @@ class TheDietDocCalculator {
         //$result = $calories + ($calories * $goalAdjustment) + ($calories * $intensityAdjustment) + ($calories * $durationAdjustment);
         //$carbCalories = $result - (($protein * 4) + $fat);
         //$protein = $protein / 4;
+        $imgPath = plugin_dir_url( __FILE__ ) . "/assets/img";
+        $variables = array("imgPath"=>$this->imgPath, "calories"=>round($result), "protein"=>round($protein), "carbs"=>round($carbs), "fat"=>round($fat));
 
-        $arr = array("fatCals" => $fatCals,"proteinCals" => $proteinCals,"fatBodyTypeAdjusted" => $fatBodyTypeAdjusted,"fatGoalAdjusted" => $fatGoalAdjusted,"proteinBodyTypeAdjusted" => $proteinBodyTypeAdjusted,"proteinIntensityAdjusted" => $proteinIntensityAdjusted,"proteinGoalAdjusted" => $proteinGoalAdjusted,"remainderCals" => $remainderCals,"mealsAdjustment" => $mealsAdjustment,"eatOutAdjustment" => $eatOutAdjustment,"fatBodyTypeAdjustment" => $fatBodyTypeAdjustment,"proteinBodyTypeAdjustment" => $proteinBodyTypeAdjustment, "weightLbs" => $weight1, "proteinGoalAdjustment" => $proteinGoalAdjustment, "fatGoalAdjustment" => $fatGoalAdjustment, "proteinIntensityAdjustment" => $proteinIntensityAdjustment,  "activityAdjustment" => $activityAdjustment,"durationAdjustment" => $durationAdjustment, "goalAdjustment" => $goalAdjustment, "height" => round($height), "weight" => round($weight), "harrisBenedict" => round($calories), "calories" => round($result), "protein" => round($protein), "carbs" => round($carbs), "fat" => round($fat));
+        ob_start();
+        require "inc/macro_label.php";
+        $page = ob_get_clean();
+
+
+        $arr = array("measurement" => $calculator->profile->measurement,"page" => $page,"personaFatAdjustment" => $personaFatAdjustment,"personaFatAdjusted" => $personaFatAdjusted,"personaProteinAdjusted" => $personaProteinAdjusted,"personaProteinAdjustment" => $personaProteinAdjustment,"personaAdjustment" => $personaAdjustment,"fatCals" => $fatCals,
+            "proteinCals" => $proteinCals,"fatBodyTypeAdjusted" => $fatBodyTypeAdjusted,"fatGoalAdjusted" => $fatGoalAdjusted,
+            "proteinBodyTypeAdjusted" => $proteinBodyTypeAdjusted,"proteinIntensityAdjusted" => $proteinIntensityAdjusted,
+            "proteinGoalAdjusted" => $proteinGoalAdjusted,"remainderCals" => $remainderCals,"mealsAdjustment" => $mealsAdjustment,
+            "eatOutAdjustment" => $eatOutAdjustment,"fatBodyTypeAdjustment" => $fatBodyTypeAdjustment,
+            "proteinBodyTypeAdjustment" => $proteinBodyTypeAdjustment, "weightLbs" => $weight1,
+            "proteinGoalAdjustment" => $proteinGoalAdjustment, "fatGoalAdjustment" => $fatGoalAdjustment,
+            "proteinIntensityAdjustment" => $proteinIntensityAdjustment,  "frequencyAdjustment" => $frequencyAdjustment,
+            "durationAdjustment" => $durationAdjustment, "goalAdjustment" => $goalAdjustment, "height" => round($calculator->profile->heightCm), "weight" => $calculator->profile->weightKg, "harrisBenedict" => round($calories), "calories" => round($result), "protein" => round($protein), "carbs" => round($carbs), "fat" => round($fat));
         //$arr = array("goalAdjustment" => $goalAdjustment, "intensityAdjustment" => $intensityAdjustment,"height" => $height, "weight" => $weight, "harrisBenedict" => $calories, "calories" => $result, "protein" => "150", "carbs" => "200", "fat" => "40");
+
+
+
 
         status_header(200);
         echo wp_json_encode($arr);
         //wp_die("Server received '$data' from your browser.");
         wp_die();
         // }
-    }
-
-    function dd_calculateOLD() {
-        //if (isset($_POST["calculate"]) && !empty($_POST["calculate"])) {
-        //echo "Calculating...";
-
-        //$peson = json_decode($_POST);
-
-        /* $to = "brian@zooxmusic.com";
-         $subject = "Learning how to send an Email in WordPress";
-         $content = "WordPress <b>knowledge<b>";
-
-         //add_filter( 'wp_mail_content_type', 'set_html_content_type' );
-
-         $status = wp_mail($to, $subject, $content);*/
-        // Handle request then generate response using echo or leaving PHP and using HTML
-
-        //$formData = json_decode($_POST['data']);
-
-        $gender = $_POST['gender'];
-        $age = $_POST['age'];
-        $heightF = $_POST['heightF'];
-        $heightI = $_POST['heightI'];
-        $weight1 = $_POST['weight'];
-        $bodyType = $_POST['bodyType'];
-        $duration = $_POST['duration'];
-        $activity = $_POST['activity'];
-        $intensity = $_POST['intensity'];
-        $goal = $_POST['goal'];
-
-        $height = (int) round((($heightF * 12) + $heightI) / 0.393701);
-        $weight = $weight1 * 0.45359237;
-
-        //$calculator = new Calculator($this->gender, $this->age, $this->height, $this->weight, $this->bodyType, $this->activity, $this->duration, $this->intensity, $this->goal);
-        //$macros = $calculator.calculate();
-
-        if($gender == "male"){
-            //(10 x weight in kg) +(6.25 height in cm) -(5 x age in years) +5
-            $calories = ((($weight*10)+($height*6.25))+(5*$age))+5;
-        } else {
-            //(10 x weight in kg) + (6.25 height in cm) - (2 x age in years) - 161
-            $calories = ((($weight*10)+($height*6.25))+(2*$age))-161;
-        }
-        $result = $calories;
-
-        $goalAdjustment = 0;
-        if($gender == "male") {
-            if($goal == 1) {
-                $goalAdjustment = 0.4;
-            } else if($goal == 2) {
-                $goalAdjustment = 0.1;
-            } else if($goal == 3) {
-                $goalAdjustment =0.25;
-            }
-        }else{
-            if($goal == 1) {
-                $goalAdjustment = 0.3;
-            } else if($goal == 2) {
-                $goalAdjustment = 0.05;
-            } else if($goal == 3) {
-                $goalAdjustment = 0.2;
-            }
-        }
-
-
-
-        $intensityAdjustment = 0;
-        if($gender == "male") {
-            if($intensity == 2) {
-                $intensityAdjustment = 0.05;
-            } else if($intensity == 3) {
-                $intensityAdjustment = 0.1;
-            }
-        }
-
-
-        $durationAdjustment = 0;
-        if($gender == "male") {
-            if($duration == 0) {
-                $durationAdjustment = 0.02;
-            } else if($duration == 1) {
-                $durationAdjustment = 0.04;
-            } else if($duration == 2) {
-                $durationAdjustment = 0.06;
-            }
-        }else{
-            if($duration == 0) {
-                $durationAdjustment = 0.01;
-            } else if($duration == 1) {
-                $durationAdjustment = 0.02;
-            } else if($duration == 2) {
-                $durationAdjustment = 0.03;
-            }
-        }
-
-
-        $bodyTypeAdjustment = 0;
-        if($gender == "male") {
-            if($bodyType == 0) { //Ectomorph
-                $bodyTypeAdjustment = 0.1;
-            } else if($bodyType == 1) { //Mesomorph
-                $bodyTypeAdjustment = 0.05;
-            }
-        }else{
-            if($bodyType == 0) { //Ectomorph
-                $bodyTypeAdjustment = 0.05;
-            } else if($bodyType == 2) { //Mesomorph
-                $bodyTypeAdjustment = -0.05;
-            }
-        }
-
-        $activityAdjustment = 0;
-        if($activity == 1) {
-            $activityAdjustment = 0.02;
-        } else if($activity == 2) {
-            $activityAdjustment = 0.04;
-        } else if($activity == 3) {
-            $activityAdjustment = 0.06;
-        }
-
-        $result  += ($result * $goalAdjustment);
-        //$result  += ($result * $intensityAdjustment);
-        $result += ($result * $durationAdjustment);
-        //$result += ($bodyTypeAdjustment * $result);
-        $result += ($activityAdjustment * $result);
-
-
-
-        // MACROS
-        $protein = 0;
-        $fat = 0;
-        $proteinGoalAdjustment = "";
-        $fatGoalAdjustment = "";
-
-        if($goal == 0) {
-            $protein = $weight1 + .73;
-            $proteinGoalAdjustment = "Multiply weight (lbs) * .73";
-        } else if($goal == 1) {
-            $protein = $weight1 + 1.08;
-            $proteinGoalAdjustment = "Multiply weight (lbs) * 1.08";
-        } else if($goal == 2) {
-            $protein = $weight1 + .73;
-            $proteinGoalAdjustment = "Multiply weight (lbs) * .73";
-        } else if($goal == 3) {
-            $protein = $weight1 + .55;
-            $proteinGoalAdjustment = "Multiply weight (lbs) * .55";
-        }
-
-        $macroActivityAdjustment = 0;
-        if($activity == 1) {
-            $protein += $protein * .02;
-            $macroGoalAdjustment = "Adjust Protein by .02";
-        } else if($activity == 2) {
-            $protein += $protein * .04;
-            $macroGoalAdjustment = "Adjust Protein by .04";
-        } else if($activity == 3) {
-            $protein += $protein * .06;
-            $macroGoalAdjustment = "Adjust Protein by .06";
-        }
-
-
-        $proteinIntensityAdjustment = "";
-        if($intensity == 2) {
-            $protein += $protein * .06;
-            $proteinIntensityAdjustment = "Adjust Protein by .06";
-        } else if($intensity == 3) {
-            $protein += $protein * .1;
-            $proteinIntensityAdjustment = "Adjust Protein by .10";
-        }
-
-        $proteinBodyTypeAdjustment = "";
-        if($bodyType == 0) { //Ectomorph
-            $protein += $protein * .1;
-            $proteinBodyTypeAdjustment = "Multiply Protein by .10";
-        } else if($bodyType == 1) { //Mesomorph
-            $protein += $protein * .05;
-            $proteinBodyTypeAdjustment = "Multiply Protein by .05";
-        }
-
-        if($goal == 0) {
-            $fat = ($result * .20);
-            $fatGoalAdjustment = "Multiply calories * .20";
-        } else if($goal == 1) {
-            $fat = ($result * .30);
-            $fatGoalAdjustment = "Multiply calories * .30";
-        } else if($goal == 2) {
-            $fat = ($result * .225);
-            $fatGoalAdjustment = "Multiply calories * .2225";
-        } else if($goal == 3) {
-            $fat = ($result * .25);
-            $fatGoalAdjustment = "Multiply calories * .25";
-        }
-        $fatBodyTypeAdjustment = "";
-        if($bodyType == 0) { //Ectomorph
-            $fat += $fat * .05;
-            $fatBodyTypeAdjustment = "Multiply Fat by .10";
-        } else if($bodyType == 2) { //Mesomorph
-            $fat += $fat * -.05;
-            $fatBodyTypeAdjustment = "Multiply Fat by -.05";
-        }
-
-        // NON AGGREGATE
-        //$result = $calories + ($calories * $goalAdjustment) + ($calories * $intensityAdjustment) + ($calories * $durationAdjustment);
-        $carbCalories = $result - (($protein * 4) + $fat);
-        //$protein = $protein / 4;
-        $fat = $fat / 9;
-        $carbs = $carbCalories / 4;
-
-        $arr = array("fatBodyTypeAdjustment" => $fatBodyTypeAdjustment,"proteinBodyTypeAdjustment" => $proteinBodyTypeAdjustment, "bodyTypeProteinAdjustment" => $proteinBodyTypeAdjustment, "weightLbs" => $weight1, "proteinGoalAdjustment" => $proteinGoalAdjustment, "fatGoalAdjustment" => $fatGoalAdjustment, "proteinIntensityAdjustment" => $proteinIntensityAdjustment,  "activityAdjustment" => $activityAdjustment,"durationAdjustment" => $durationAdjustment, "goalAdjustment" => $goalAdjustment, "height" => round($height), "weight" => round($weight), "harrisBenedict" => round($calories), "calories" => round($result), "protein" => round($protein), "carbs" => round($carbs), "fat" => round($fat));
-        //$arr = array("goalAdjustment" => $goalAdjustment, "intensityAdjustment" => $intensityAdjustment,"height" => $height, "weight" => $weight, "harrisBenedict" => $calories, "calories" => $result, "protein" => "150", "carbs" => "200", "fat" => "40");
-
-        status_header(200);
-        echo wp_json_encode($arr);
-        //wp_die("Server received '$data' from your browser.");
-        wp_die();
-        // }
-    }
-
-    function dd_custom_head() {
-        echo '<script type="text/javascript">var ajaxurl = \'' . admin_url('admin-ajax.php') . '\';</script>';
-
-    }
-
-    public function createCalculator($attrs)    {
-        return include_once("wizard.php");
-    }
-
-    public function createTestCalculator($attrs)    {
-        return include_once("test_calculator.php");
     }
 
 
@@ -550,13 +432,18 @@ class TheDietDocCalculator {
 
 $bmiCalculatorPlugin = new TheDietDocCalculator();
 
+//add_filter( 'wp_default_scripts', array($bmiCalculatorPlugin,'dequeue_jquery_migrate' ));
+//add_action('init',  array($bmiCalculatorPlugin,'register_styles' ));
+//add_action( 'wp_enqueue_scripts',  array($bmiCalculatorPlugin,'enqueue_scripts' ));
 
-add_action( 'wp_ajax_dd_calculate', array($bmiCalculatorPlugin,'dd_calculate' ));
+add_action( 'wp_ajax_dd_calculate', array($bmiCalculatorPlugin,'dd_calculate'));
 add_action( 'wp_ajax_nopriv_dd_calculate', array($bmiCalculatorPlugin,'dd_calculate' ));
-
-add_action('wp_head', array($bmiCalculatorPlugin, 'dd_custom_head'));
-
 add_action( 'admin_post_dd_calculate', array($bmiCalculatorPlugin, 'prefix_admin_dd_calculate') );
+add_action('wp_head', array($bmiCalculatorPlugin, 'dd_custom_head'));
+// wp_print_styles are at the bottom of the header
+add_action('wp_print_styles', array($bmiCalculatorPlugin, 'enqueue_styles'));
+add_action("wp_footer", array($bmiCalculatorPlugin, 'enqueue_scripts'));
+
 add_shortcode('dd_calc', array($bmiCalculatorPlugin, 'createCalculator'));
 add_shortcode('dd_test_calc', array($bmiCalculatorPlugin, 'createTestCalculator'));
 //add_action( 'template_redirect',  array($bmiCalculatorPlugin,'wpse12535_redirect_sample'));
