@@ -1,5 +1,4 @@
-
-        <div class="col-md-8 col-md-offset-2">
+<div class="col-md-8 col-md-offset-2">
             <div class="wizard-container">
                 <div class="card wizard-card" data-color="red" id="calculator-content" >
                     <form id="calculator-form" role="form">
@@ -39,11 +38,11 @@
                                     <div class="col-xs-10 col-xs-offset-1 input-group">
                                         <span class="input-group-addon"><label id="gender-label">Gender</label></span>
                                         <label class="col-xs-3">
-                                            <input type="radio" name="gender" id="male" value="0">
+                                            <input type="radio" name="gender" id="male" value="0" onclick="clickMale();">
                                             <i class="fa fa-male fa-fw left"></i>&nbsp;Male
                                         </label>
                                         <label class="col-xs-3">
-                                            <input type="radio" name="gender" id="female" value="1">
+                                            <input type="radio" name="gender" id="female" value="1" onclick="clickFemale();">
                                             <i class="fa fa-female fa-fw left"></i>&nbsp;Female
                                         </label>
                                     </div>
@@ -115,20 +114,83 @@
                             </div>
                             <div class="tab-pane" id="body-type">
                                 <h4> What body type are you? </h4>
+
                                 <div class="row">
-                                    <div class="col-xs-10 col-xs-offset-1 input-group">
-                                        <span class="input-group-addon"><label id="gender-label">Body Type</label></span>
-                                        <label class="col-xs-3">
-                                            <input type="radio" name="bodyType" id="0" value="0">&nbsp;Ecomorph
-                                        </label>
-                                        <label class="col-xs-3">
-                                            <input type="radio" name="bodyType" id="1" value="1">&nbsp;Mesomorph
-                                        </label>
-                                        <label class="col-xs-3">
-                                            <input type="radio" name="bodyType" id="2" value="1">&nbsp;Endomorph
-                                        </label>
+                                    <div class="input-group">
+                                        <div class="col-xs-4">
+                                            <div class="card card-product">
+                                                <div class="card-image">
+                                                    <a href="#pablo">
+                                                        <img id="ectoImg" class="img" />
+                                                    </a>
+                                                </div>
+
+                                                <div class="content">
+                                                    <h4 class="card-title">
+                                                        <a href="#pablo">Ectomorph</a>
+                                                    </h4>
+                                                    <div class="card-description bt-card">
+                                                        An ectomorph is a typical skinny guy. Ecto&#39;s have a light build with small joints and lean muscle. Usually ectomorph&#39;s have long thin limbs with stringy muscles. Shoulders tend to be thin with little width.
+                                                    </div>
+                                                    <div class="footer">
+                                                        <div class="stats">
+                                                            <input type="radio" name="bodyType" value="0">&nbsp;Select
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <div class="card card-product">
+                                                <div class="card-image">
+                                                    <a href="#pablo">
+                                                        <img id="endoImg" class="img" />
+                                                    </a>
+                                                </div>
+
+                                                <div class="content">
+                                                    <h4 class="card-title">
+                                                        <a href="#pablo">Endomorph</a>
+                                                    </h4>
+                                                    <div class="card-description bt-card">
+                                                        The endomorph body type is solid and generally soft. Endomorphs gain fat very easily. Endo&#39;s are usually of a shorter build with thick arms and legs. Muscles are strong, especially the upper legs. Endomorphs find they are naturally strong in leg exercises like the squat.
+                                                    </div>
+                                                    <div class="footer">
+                                                        <div class="stats">
+                                                            <input type="radio" name="bodyType" value="2">&nbsp;Select
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <div class="card card-product">
+                                                <div class="card-image">
+                                                    <a href="#pablo">
+                                                        <img id="mesoImg" class="img" />
+                                                    </a>
+                                                </div>
+
+                                                <div class="content">
+                                                    <h4 class="card-title">
+                                                        <a href="#pablo">Mesomorph</a>
+                                                    </h4>
+                                                    <div class="card-description bt-card">
+                                                        A mesomorph has a large bone structure, large muscles and a naturally athletic physique. Mesomorphs are the best body type for bodybuilding. They find it quite easy to gain and lose weight. They are naturally strong which is the perfect platform for building muscle.
+                                                    </div>
+                                                    <div class="footer">
+                                                        <div class="stats">
+                                                            <input type="radio" name="bodyType" value="1">&nbsp;Select
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                               </div>
                             </div>
                             <div class="tab-pane" id="status-quo">
                                 <h4>What is your daily physical activity?</h4>
@@ -242,7 +304,23 @@
 
 
         <script>
+            var gender = "male";
+            setImages();
+            function getEctoImgUrl() {
+                return pluginUrl + "/assets/img/" +  gender + "/ectomorph.png";
+            }
+            function getEndoImgUrl() {
+                return pluginUrl + "/assets/img/" +  gender + "/endomorph.png";
+            }
+            function getMesoImgUrl() {
+                return pluginUrl + "/assets/img/" +  gender + "/mesomorph.png";
+            }
 
+            function setImages() {
+                jQuery("#endoImg").attr("src",getEndoImgUrl());
+                jQuery("#ectoImg").attr("src",getEctoImgUrl());
+                jQuery("#mesoImg").attr("src",getMesoImgUrl());
+            }
 
             function measurementClicked() {
 
@@ -281,5 +359,14 @@
                 //console.log("ending method");
 
 
+            }
+
+            function clickMale() {
+                gender = "male";
+                setImages();
+            }
+            function clickFemale() {
+                gender = "female";
+                setImages();
             }
         </script>

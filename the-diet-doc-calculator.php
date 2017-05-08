@@ -3,7 +3,7 @@
  * Plugin Name:       The Diet Doc Dohicky Calculators
  * Plugin URI:        https://www.babyibexrule.com
  * Description:       Macro Nutrient Calculator provided by Dr. Joe Klmemczewski and his trusty sidekick
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            Brian Zooxinator
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
@@ -66,6 +66,7 @@ class TheDietDocCalculator {
     function dd_custom_head() {
         $this->fix_jquery();
         echo '<script type="text/javascript">var ajaxurl = \'' . admin_url('admin-ajax.php') . '\';</script>';
+        echo '<script type="text/javascript">var pluginUrl = \'' . plugin_dir_url( __FILE__ ) . '\';</script>';
     }
 
     public function createCalculator($attrs)    {

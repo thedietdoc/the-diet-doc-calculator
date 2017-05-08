@@ -46,3 +46,260 @@ span.status-label {
     color: #AAAAAA;
     font-weight: 400;
 }
+
+.bt-card {
+    height: 275px;
+}
+
+.title,
+.card-title,
+.info-title,
+.footer-brand,
+.footer-big h5,
+.footer-big h4,
+.media .media-heading {
+    font-weight: 700;
+    font-family: "Roboto Slab", "Times New Roman", serif;
+}
+.title,
+.title a,
+.card-title,
+.card-title a,
+.info-title,
+.info-title a,
+.footer-brand,
+.footer-brand a,
+.footer-big h5,
+.footer-big h5 a,
+.footer-big h4,
+.footer-big h4 a,
+.media .media-heading,
+.media .media-heading a {
+    color: #3C4858;
+    text-decoration: none;
+}
+
+h2.title {
+    margin-bottom: 30px;
+}
+
+.description,
+.card-description,
+.footer-big p {
+    color: #999999;
+}
+
+.text-warning {
+    color: #ff9800;
+}
+
+.text-primary {
+    color: #9c27b0;
+}
+
+.text-danger {
+    color: #f44336;
+}
+
+.text-success {
+    color: #4caf50;
+}
+
+.text-info {
+    color: #00bcd4;
+}
+
+.text-rose {
+    color: #e91e63;
+}
+
+.text-gray {
+    color: #999999;
+}
+
+.card {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    margin-bottom: 30px;
+    border-radius: 6px;
+    color: rgba(0,0,0, 0.87);
+    background: #fff;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+.card .card-height-indicator {
+    margin-top: 100%;
+}
+.card .card-image {
+    height: 60%;
+    position: relative;
+    overflow: hidden;
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    top: -10px;
+    border-radius: 6px;
+    box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
+.card .card-image img {
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    pointer-events: none;
+}
+.card .card-image .card-title {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    color: #fff;
+    font-size: 1.3em;
+    text-shadow: 0 2px 5px rgba(33, 33, 33, 0.5);
+}
+.card .category:not([class*="text-"]) {
+    color: #999999;
+}
+.card .content {
+    padding: 0 30px;
+}
+.card .card-body {
+    height: 30%;
+    padding: 18px;
+}
+.card img {
+    width: 100%;
+    height: auto;
+}
+
+.card .footer {
+    margin-top: 15px;
+}
+.card .footer div {
+    display: inline-block;
+}
+.card .footer .author {
+    color: #999999;
+}
+.card .footer .stats {
+    float: right;
+    line-height: 30px;
+    color: #999999;
+    width:100%;
+    text-align: center;
+}
+
+.card .footer .stats button {
+    width: 150px;
+}
+.card .footer .stats .material-icons {
+    position: relative;
+    top: 4px;
+    font-size: 18px;
+}
+.card-raised {
+    box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+.card-background {
+    background-position: center center;
+    background-size: cover;
+    text-align: center;
+}
+.card-background .content {
+    position: relative;
+    z-index: 2;
+    min-height: 280px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    max-width: 440px;
+    margin: 0 auto;
+}
+.card-background .category,
+.card-background .card-description,
+.card-background small {
+    color: rgba(255, 255, 255, 0.7);
+}
+.card-background .card-title {
+    color: #FFFFFF;
+    margin-top: 10px;
+}
+.card-background:not(.card-pricing) .btn {
+    margin-bottom: 0;
+}
+.card-background:after {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: block;
+    left: 0;
+    top: 0;
+    content: "";
+    background-color: rgba(0, 0, 0, 0.56);
+    border-radius: 6px;
+}
+
+.card-product {
+    margin-top: 30px;
+}
+.card-product .btn-simple.btn-just-icon {
+    padding: 0;
+}
+.card-product .footer {
+
+}
+.card-product .footer .stats .material-icons {
+    margin-top: 4px;
+    top: 0;
+}
+.card-product .footer .price h4 {
+    margin-bottom: 0;
+}
+.card-product .card-title,
+.card-product .category,
+.card-product .card-description {
+    text-align: center;
+}
+
+.withripple {
+    position: relative;
+}
+
+.ripple-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+}
+.disabled .ripple-container {
+    display: none;
+}
+
+.ripple {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    margin-left: -10px;
+    margin-top: -10px;
+    border-radius: 100%;
+    background-color: #000;
+    background-color: rgba(0, 0, 0, 0.05);
+    transform: scale(1);
+    transform-origin: 50%;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ripple.ripple-on {
+    transition: opacity 0.15s ease-in 0s, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+    opacity: 0.1;
+}
+
+.ripple.ripple-out {
+    transition: opacity 0.1s linear 0s !important;
+    opacity: 0;
+}
